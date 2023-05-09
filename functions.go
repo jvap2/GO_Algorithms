@@ -77,3 +77,29 @@ func Dot_Product(A []float64, B []float64) float64 {
 	}
 	return out
 }
+
+func Const_Vect_Mult(q float64, B []float64)[]float64{
+	out:=make([]float64, len(B))
+	for i:=0; i<len(B);i++{
+		out[i]=q*B[i]
+	}
+	return out
+} 
+
+
+func Vect_Add(A []float64, B []float64, sign bool) []float64{
+	if len(A)!=len(B){
+		fmt.Print("Vector sizes are incompatible")
+	}
+	out:=make([]float64, len(A))
+	if sign{
+		for i:=0; i<len(A); i++{
+			out[i]=A[i]+B[i]
+		}
+	}else{
+		for i:=0; i<len(A); i++{
+			out[i]=A[i]-B[i]
+		}
+	}
+	return out
+}
