@@ -27,6 +27,20 @@ func CGS(A [][]float64, b []float64, x []float64)[]float64{
 	return x
 }
 
+func Steep_Descent(A [][]float64, b []float64, x []float64)[]float64{
+	check:=true
+	tol:=1e-9
+	for check{
+		r:=Vect_Add(b,Mat_Vect_Mult(A,x,len(A),len(A[0]),len(x)),false)
+		lambda:=Dot_Product(r,r)/Dot_Product(Mat_Vect_Mult(A,r,len(A),len(A[0]),len(r)),r)
+		if lambda<=tol{
+			break
+		}
+		x=Vect_Add(x,Const_Vect_Mult(lambda,r),true)
+	}
+	return x
+}
+
 
 func Mat_Mult(A [][]float64, B [][]float64, row_a int, col_a int, row_b int, col_b int) [][]float64{
 	if col_a != row_b{
