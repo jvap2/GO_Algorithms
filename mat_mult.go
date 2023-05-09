@@ -25,23 +25,26 @@ func Mat_Mult(A [][]float64, B [][]float64, row_a int, col_a int, row_b int, col
 	if col_a != row_b{
 		fmt.Print("Dimensions are incompatible for matrix multiplication")
 	}
+	fSum:=0.0
 	C:=make([][]float64, row_a)
 	for i := range C{
 		C[i]=make([] float64, col_b)
 	}
 	for i:=0; i<row_a;i++{
 		for j:=0; j<col_b; j++{
+			fSum=0
 			for k:=0;k<col_a;k++{
-				C[i][j]+=A[i][k]*B[k][j]
+				fSum+=A[i][k]*B[k][j]
 			}
+			C[i][j]=fSum
 		}
 	}
 	return C
 }
 
 func main(){
-	A:=fill(2,2,99)
-	B:=fill(2,2,69)
+	A:=fill(2,3,99)
+	B:=fill(3,2,69)
 	C:=Mat_Mult(A,B,len(A),len(A[0]),len(B),len(B[0]))
 	fmt.Println("A",A)
 	fmt.Println("B",B)
