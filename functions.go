@@ -41,6 +41,22 @@ func Steep_Descent(A [][]float64, b []float64, x []float64)[]float64{
 	return x
 }
 
+func Inverse(A [][]float64) [][]float64{
+	//Forward Elimination
+	// inv:=make([][]float64,len(A))
+	// for i:=range inv{
+	// 	inv[i]=make([]float64,len(A[0]))
+	// }
+	for i:=0; i<len(A)-1;i++{
+		for j:=i+1; j<len(A);j++{
+			for k:=i;k<len(A);k++{
+				A[j][k]=A[j][k]-(A[j][i]/A[i][i])*A[i][k]
+			}
+		}
+	}
+	return A
+}
+
 
 func Mat_Mult(A [][]float64, B [][]float64, row_a int, col_a int, row_b int, col_b int) [][]float64{
 	if col_a != row_b{
@@ -152,3 +168,4 @@ func Tranpose(A [][]float64) [][]float64{
 	}
 	return A_T
 }
+
