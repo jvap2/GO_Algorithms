@@ -14,10 +14,4 @@ func main(){
 	fmt.Println("A",A)
 	fmt.Println("B",B)
 	fmt.Println("C",C)
-
-
-	D:=fill_Mat(4,4,420)
-	fmt.Println("D", D)
-	D=Inverse(D)
-	fmt.Println("D^-1",D)
 }

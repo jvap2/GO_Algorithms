@@ -41,7 +41,8 @@ func Steep_Descent(A [][]float64, b []float64, x []float64)[]float64{
 	return x
 }
 
-func Inverse(A [][]float64) [][]float64{
+func Solve(A [][]float64, x []float64) []float64{
+	out:=make([]float64,len(A[0]))
 	//Forward Elimination
 	for i:=0; i<len(A)-1;i++{
 		for j:=i+1; j<len(A);j++{
@@ -51,14 +52,14 @@ func Inverse(A [][]float64) [][]float64{
 		}
 	}
 	//Back Elim
-	for i:=len(A)-1;i>0;i--{
-		for j:=i-1;j>=0;j--{
-			for k:=i;k>=j;k--{
-				A[j][k]=A[j][k]-(A[j][i]/A[i][i])*A[i][k]
-			}
+	out[len(A[0])-1]=x[len(A)-1]/A[len(A)-1][len(A[0])-1]
+	for i:=len(A[0])-2;i>=0;i--{
+		for j:=len(A[0])-1;j>i;j--{
+			out[i]-=A[i][j]*out[j]
 		}
+		out[i]/=A[i][i]
 	}
-	return A
+	return out
 }
 
 
