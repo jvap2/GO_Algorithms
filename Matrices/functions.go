@@ -174,3 +174,4 @@ func Tranpose(A [][]float64) [][]float64{
 	return A_T
 }
 
+
