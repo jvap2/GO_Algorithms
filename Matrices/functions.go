@@ -7,13 +7,13 @@ import(
 
 func CGS(A [][]float64, b []float64, x []float64)[]float64{
 	A_T:=Tranpose(A)
-	r:=Mat_Vect_Mult(A_T,Vect_Add(b,Mat_Vect_Mult(A,x, len(A),len(A[0]), len(x)),false),len(A_T),len(A_T[0]),len(b))
+	r:=Mat_Vect_Mult(A_T,Vect_Add(b,Mat_Vect_Mult(A,x),false))
 	d:=r
 	check:=true
 	tol:=1e-9
 	for check{
-		q:=Mat_Vect_Mult(A_T,Mat_Vect_Mult(A,d,len(A),len(A[0]),len(d)),len(A_T),len(A_T[0]),len(A))
-		Ad:=Mat_Vect_Mult(A,d,len(A),len(A[0]),len(d))
+		q:=Mat_Vect_Mult(A_T,Mat_Vect_Mult(A,d))
+		Ad:=Mat_Vect_Mult(A,d)
 		lambda:=Dot_Product(r,r)/Dot_Product(Ad,Ad)
 		if lambda<=tol{
 			break
@@ -31,8 +31,8 @@ func Steep_Descent(A [][]float64, b []float64, x []float64)[]float64{
 	check:=true
 	tol:=1e-9
 	for check{
-		r:=Vect_Add(b,Mat_Vect_Mult(A,x,len(A),len(A[0]),len(x)),false)
-		lambda:=Dot_Product(r,r)/Dot_Product(Mat_Vect_Mult(A,r,len(A),len(A[0]),len(r)),r)
+		r:=Vect_Add(b,Mat_Vect_Mult(A,x),false)
+		lambda:=Dot_Product(r,r)/Dot_Product(Mat_Vect_Mult(A,r),r)
 		if lambda<=tol{
 			break
 		}
@@ -63,19 +63,19 @@ func Solve(A [][]float64, x []float64) []float64{
 }
 
 
-func Mat_Mult(A [][]float64, B [][]float64, row_a int, col_a int, row_b int, col_b int) [][]float64{
-	if col_a != row_b{
+func Mat_Mult(A [][]float64, B [][]float64) [][]float64{
+	if len(A[0]) != len(B){
 		fmt.Print("Dimensions are incompatible for matrix multiplication")
 	}
 	fSum:=0.0
-	C:=make([][]float64, row_a)
+	C:=make([][]float64, len(A))
 	for i := range C{
-		C[i]=make([] float64, col_b)
+		C[i]=make([] float64, len(B[0]))
 	}
-	for i:=0; i<row_a;i++{
-		for j:=0; j<col_b; j++{
+	for i:=0; i<len(A);i++{
+		for j:=0; j<len(B[0]); j++{
 			fSum=0
-			for k:=0;k<col_a;k++{
+			for k:=0;k<len(A[0]);k++{
 				fSum+=A[i][k]*B[k][j]
 			}
 			C[i][j]=fSum
@@ -84,10 +84,12 @@ func Mat_Mult(A [][]float64, B [][]float64, row_a int, col_a int, row_b int, col
 	return C
 }
 
-func Mat_Vect_Mult(A [][]float64, b []float64, row_a int, col_a int, v_len int) []float64{
-	if col_a!=v_len{
+func Mat_Vect_Mult(A [][]float64, b []float64) []float64{
+	if len(A[0])!=len(b){
 		fmt.Print("Dimensions are incompatible")
 	}
+	row_a:=len(A)
+	col_a:=len(A[0])
 	out := make([]float64, row_a)
 	var fSum float64
 	for i:=0; i<row_a; i++{
